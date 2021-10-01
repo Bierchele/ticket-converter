@@ -47,7 +47,7 @@ export class TextProduct implements TextBox {
     this.left = textRowObj.left // * .9;
     this.top = textRowObj.top // * 0.90909090909;
     this.width = textRowObj.width ;
-    this.height = textRowObj.height;
+    this.height = 0 //textRowObj.height;
     this.fill = "#000000";
     this.stroke = null;
     this.strokeWidth = 1;

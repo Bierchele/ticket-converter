@@ -1,6 +1,7 @@
 import { TextRow } from "..";
 import { Image } from "../interfaces/image";
-import { toUrl } from "../utils/toURL";
+import { fetchImage } from "../utils/getImage";
+let url = "";
 
 export class PictureProduct implements Image {
   type!: string;
@@ -74,7 +75,7 @@ export class PictureProduct implements Image {
     this.skewY = 0;
     this.cropX = 0;
     this.cropY != 0;
-    this.src = "";                      //`cdn.tiodev.de/companies/V9jxYWiH/ticketdesigns/xOt8qeZi/elements/nmLExwhV.jpg`,
+    this.src = ""; //`cdn.tiodev.de/companies/V9jxYWiH/ticketdesigns/xOt8qeZi/elements/nmLExwhV.jpg`,
     this.crossOrigin = null;
     this.filters = [];
   }

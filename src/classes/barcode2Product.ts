@@ -1,6 +1,5 @@
 import { TextRow } from "..";
 import { Image } from "../interfaces/image";
-import { toUrl } from "../utils/toURL";
 
 export class Barcode2Product implements Image {
   type!: string;
@@ -74,7 +73,7 @@ export class Barcode2Product implements Image {
     this.skewY = 0;
     this.cropX = 0;
     this.cropY != 0;
-    this.src =  ""; // "cdn.tiodev.de/assets/admin/img/ticketdesigneditor/barcode2.gif";
+    this.src = ""; //  "cdn.tiodev.de/assets/admin/img/ticketdesigneditor/barcode2.gif";
     this.crossOrigin = null;
     this.filters = [];
   }

@@ -1,3 +1,4 @@
+import { fetchImage } from "./utils/getImage";
 import { DesignTextRow } from "./interfaces/desginTextRow";
 import mysql2 from "mysql2/promise";
 import { ImageFactory } from "./factories/imageFactory";
@@ -6,7 +7,6 @@ import { FabricObject } from "./interfaces/fabricObject";
 import { TextBox } from "./interfaces/textBox";
 import { ElementTextRow } from "./interfaces/elementTextRow";
 import { getSize } from "./utils/getPicSize";
-import { toUrl } from "./utils/toURL";
 const clipboardy = require("clipboardy");
 
 const config = {
@@ -61,9 +61,9 @@ const fabricfy = async (oldElements: any) => {
       AbstractFactory.createObject(oldElements.ticketElements[0][i])
     );
   }
-
+  getSize();
   clipboardy.writeSync(JSON.stringify(fabricsElements));
- //console.log(JSON.stringify(fabricsElements))
+  // console.log(JSON.stringify(fabricsElements));
 };
 
 (async () => {
