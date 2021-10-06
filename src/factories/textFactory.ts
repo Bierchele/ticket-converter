@@ -44,10 +44,10 @@ export class TextProduct implements TextBox {
     this.version = "4.5.1";
     this.originX = "left";
     this.originY = "top";
-    this.left = textRowObj.left // * .9;
-    this.top = textRowObj.top // * 0.90909090909;
-    this.width = textRowObj.width ;
-    this.height = 0 //textRowObj.height;
+    this.left = textRowObj.left; // * .9;
+    this.top = textRowObj.top; // * 0.90909090909;
+    this.width = textRowObj.width;
+    this.height = 0; //textRowObj.height;
     this.fill = "#000000";
     this.stroke = null;
     this.strokeWidth = 1;
@@ -60,7 +60,7 @@ export class TextProduct implements TextBox {
     this.scaleX = 1;
     this.scaleY = 1;
     this.text = textRowObj.value;
-    this.fontSize = textRowObj.fontsize // * 0.85;
+    this.fontSize = textRowObj.fontsize; // * 0.85;
     this.fontWeight = "normal";
     this.fontFamily = "Arial";
     this.fontStyle = "normal";
@@ -80,7 +80,7 @@ export class TextProduct implements TextBox {
 }
 
 export class TextFactory {
-  static getObject(oldElement: TextRow): TextProduct {
+  static convert(oldElement: TextRow): TextProduct {
     return new TextProduct(oldElement);
   }
 }

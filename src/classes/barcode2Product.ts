@@ -1,5 +1,6 @@
 import { TextRow } from "..";
 import { Image } from "../interfaces/image";
+import { fetchImage } from "../utils/getImage";
 
 export class Barcode2Product implements Image {
   type!: string;
@@ -39,6 +40,24 @@ export class Barcode2Product implements Image {
   crossOrigin!: string | null;
   filters!: [];
 
+  public setDimensions(intrinsicWidth: number, intrinsicHeight: number) {
+    this.scaleX = this.width / intrinsicWidth;
+    this.scaleY = this.height / intrinsicHeight;
+    this.width = intrinsicWidth;
+    this.height = intrinsicHeight;
+  }
+
+  public async saveImage(name: string) {
+    await fetchImage(
+      "https://cdn.tiodev.de/assets/admin/img/ticketdesigneditor/barcode2.gif",
+      name
+    );
+  }
+
+  public setSrc(src: string) {
+    this.src = src;
+  }
+
   constructor(textRowObj: TextRow) {
     this.type = "image";
     this.version = "4.5.1";
@@ -46,8 +65,8 @@ export class Barcode2Product implements Image {
     this.originY = "top";
     this.left = textRowObj.left; // * 0.8522935779816514;
     this.top = textRowObj.top; // * 0.84143958868894586;
-    this.width = textRowObj.width / 0.6989247311827957;
-    this.height = textRowObj.height / 0.6894586894586895;
+    this.width = textRowObj.width;
+    this.height = textRowObj.height;
     this.fill = "#000000";
     this.stroke = null;
     this.strokeWidth = 1;
@@ -73,7 +92,7 @@ export class Barcode2Product implements Image {
     this.skewY = 0;
     this.cropX = 0;
     this.cropY != 0;
-    this.src = ""; //  "cdn.tiodev.de/assets/admin/img/ticketdesigneditor/barcode2.gif";
+    this.src = ""; //
     this.crossOrigin = null;
     this.filters = [];
   }

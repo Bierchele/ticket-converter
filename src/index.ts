@@ -1,3 +1,4 @@
+import { convertToBase64 } from "./utils/toBase64";
 import { fetchImage } from "./utils/getImage";
 import { DesignTextRow } from "./interfaces/desginTextRow";
 import mysql2 from "mysql2/promise";
@@ -7,7 +8,7 @@ import { FabricObject } from "./interfaces/fabricObject";
 import { TextBox } from "./interfaces/textBox";
 import { ElementTextRow } from "./interfaces/elementTextRow";
 import { getSize } from "./utils/getPicSize";
-const clipboardy = require("clipboardy");
+import clipboardy from "clipboardy";
 
 const config = {
   host: "127.0.0.1",
@@ -32,20 +33,20 @@ const promiseWrapper = async () => {
 };
 
 class AbstractFactory {
-  static createObject(oldTicketElement: ElementTextRow) {
+  static createNewDesign(oldTicketElement: ElementTextRow) {
     switch (oldTicketElement.type) {
       case "text":
-        return TextFactory.getObject(oldTicketElement);
+        return TextFactory.convert(oldTicketElement);
       case "required":
-        return TextFactory.getObject(oldTicketElement);
+        return TextFactory.convert(oldTicketElement);
       case "barcode":
-        return ImageFactory.getObject(oldTicketElement);
+        return ImageFactory.convert(oldTicketElement);
       case "barcode2":
-        return ImageFactory.getObject(oldTicketElement);
+        return ImageFactory.convert(oldTicketElement);
       case "qrcode":
-        return ImageFactory.getObject(oldTicketElement);
+        return ImageFactory.convert(oldTicketElement);
       case "picture":
-        return ImageFactory.getObject(oldTicketElement);
+        return ImageFactory.convert(oldTicketElement);
     }
   }
 }
@@ -58,12 +59,12 @@ const fabricfy = async (oldElements: any) => {
   fabricsElements.ticketInfos = oldElements.ticketDesign[0][0];
   for (let i = 0; i < oldElements.ticketElements[0].length; i++) {
     fabricsElements.objects.push(
-      AbstractFactory.createObject(oldElements.ticketElements[0][i])
+      await AbstractFactory.createNewDesign(oldElements.ticketElements[0][i])
     );
   }
-  getSize();
+
   clipboardy.writeSync(JSON.stringify(fabricsElements));
-  // console.log(JSON.stringify(fabricsElements));
+  //console.log(JSON.stringify(fabricsElements));
 };
 
 (async () => {

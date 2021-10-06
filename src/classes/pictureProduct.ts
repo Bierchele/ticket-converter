@@ -41,6 +41,24 @@ export class PictureProduct implements Image {
   crossOrigin!: string | null;
   filters!: [];
 
+  public setDimensions(intrinsicWidth: number, intrinsicHeight: number) {
+    this.scaleX = this.width / intrinsicWidth;
+    this.scaleY = this.height / intrinsicHeight;
+    this.width = intrinsicWidth;
+    this.height = intrinsicHeight;
+  }
+
+  public async saveImage(name: string) {
+    await fetchImage(
+      `https://cdn.tiodev.de/companies/V9jxYWiH/ticketdesigns/xOt8qeZi/elements/nmLExwhV.jpg`,
+      name
+    );
+  }
+
+  public setSrc(src: string) {
+    this.src = src;
+  }
+
   constructor(textRowObj: TextRow) {
     this.type = "image";
     this.version = "4.5.1";
@@ -48,8 +66,8 @@ export class PictureProduct implements Image {
     this.originY = "top";
     this.left = textRowObj.left; // * 0.8642857142857143;
     this.top = textRowObj.top; // * 0.8800000000000002;
-    this.width = textRowObj.width / 0.3224400871459695;
-    this.height = textRowObj.height / 0.32175925925925924;
+    this.width = textRowObj.width;
+    this.height = textRowObj.height;
     this.fill = "#000000";
     this.stroke = null;
     this.strokeWidth = 1;
@@ -59,8 +77,8 @@ export class PictureProduct implements Image {
     this.strokeLineJoin = "miter";
     this.strokeUniform = false;
     this.strokeMiterLimit = 4;
-    this.scaleX = textRowObj.width / 918; //* 0.85 / 918;
-    this.scaleY = textRowObj.height / 1296; // * 0.85  / 1296;
+    this.scaleX = 0; //* 0.85 / 918;
+    this.scaleY = 0; // * 0.85  / 1296;
     this.angle = 0;
     this.flipX = false;
     this.flipY = false;
@@ -75,8 +93,7 @@ export class PictureProduct implements Image {
     this.skewY = 0;
     this.cropX = 0;
     this.cropY != 0;
-    this.src = ""; //`cdn.tiodev.de/companies/V9jxYWiH/ticketdesigns/xOt8qeZi/elements/nmLExwhV.jpg`,
-    this.crossOrigin = null;
+    (this.src = ""), (this.crossOrigin = null);
     this.filters = [];
   }
 }

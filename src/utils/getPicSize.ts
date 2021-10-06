@@ -1,9 +1,10 @@
-const { promisify } = require("util");
+import { promisify } from "util";
 const sizeOf = promisify(require("image-size"));
 
-export const getSize = () => {
-  const dimensions = sizeOf("./src/assets/images/qrcode.JPEG");
-  console.log(dimensions.width, dimensions.height);
+export const getSize = async (type: string) => {
+  const dimensions = await sizeOf(`./src/assets/images/${type}.jpeg`);
+  return {
+    intrinscWitdh: dimensions.width as number,
+    intrinsicHeight: dimensions.height as number,
+  };
 };
-
-// lokal speichern

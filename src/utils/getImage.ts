@@ -9,5 +9,5 @@ export const fetchImage = async (url: string, name: string) => {
     responseType: "stream",
   });
   const path = Path.resolve("./src/assets", "images", `${name}.jpeg`);
-  response.data.pipe(fs.createWriteStream(path));
+  await response.data.pipe(fs.createWriteStream(path));
 };

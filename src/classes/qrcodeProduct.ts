@@ -43,38 +43,33 @@ export class QRProduct implements Image {
   crossOrigin!: null | string;
   filters!: [];
 
-  public saveImage(name: string) {
-    fetchImage(
+  public async saveImage(name: string) {
+    await fetchImage(
       "https://cdn.tiodev.de/assets/admin/img/ticketdesigneditor/qrcode.gif",
       name
     );
   }
-  getSize = (textRowObj: TextRow) => {
-    (async () => {
-      try {
-        const dimensions = await sizeOf(
-          `./src/assets/images/${textRowObj.type}.jpeg`
-        );
-        this.scaleX = textRowObj.width / dimensions.width;
-        this.scaleX = textRowObj.width / dimensions.width;
-        this.width = textRowObj.width / (textRowObj.width / dimensions.width);
-        this.height =
-          textRowObj.height / (textRowObj.height / dimensions.height);
-      } catch (err) {
-        console.error(err);
-      }
-    })().then((c) => console.log(c));
-  };
+
+  public setDimensions(intrinsicWidth: number, intrinsicHeight: number) {
+    this.scaleX = this.width / intrinsicWidth;
+    this.scaleY = this.height / intrinsicHeight;
+    this.width = intrinsicWidth;
+    this.height = intrinsicHeight;
+  }
+
+  public setSrc(src: string) {
+    this.src = src;
+  }
 
   constructor(textRowObj: TextRow) {
     this.type = "image";
     this.version = "4.5.1";
     this.originX = "left";
     this.originY = "top";
-    this.left = textRowObj.left; // * 0.9222222222222222;
-    this.top = textRowObj.top; // * 0.853154918524674;
-    this.width = 0; //textRowObj.width / 1.3895582329317269;
-    this.height = 0; //textRowObj.width / 1.3895582329317269;
+    this.left = textRowObj.left;
+    this.top = textRowObj.top;
+    this.width = textRowObj.width;
+    this.height = textRowObj.width;
     this.fill = "#000000";
     this.stroke = null;
     this.strokeWidth = 1;
@@ -84,8 +79,8 @@ export class QRProduct implements Image {
     this.strokeLineJoin = "miter";
     this.strokeUniform = false;
     this.strokeMiterLimit = 4;
-    this.scaleX = 0; //textRowObj.width / 249; //* 0.8554913294797688 / 249);
-    this.scaleY = 0; //textRowObj.height / 249; // * 0.8554913294797688 / 249);
+    this.scaleX = 0;
+    this.scaleY = 0;
     this.angle = 0;
     this.flipX = false;
     this.flipY = false;
