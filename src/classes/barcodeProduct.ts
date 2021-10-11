@@ -1,6 +1,6 @@
 import { TextRow } from "..";
 import { Image } from "../interfaces/image";
-import { fetchImage } from "../utils/getImage";
+import { fetchImage } from "../utils/fetchImage";
 
 export class BarcodeProduct implements Image {
   type!: string;
@@ -47,11 +47,8 @@ export class BarcodeProduct implements Image {
     this.height = intrinsicHeight;
   }
 
-  public async saveImage(name: string) {
-    await fetchImage(
-      "https://cdn.tiodev.de/assets/admin/img/ticketdesigneditor/barcode1.gif",
-      name
-    );
+  public async saveImage(name: string, src: string) {
+    await fetchImage(src, name);
   }
 
   public setSrc(src: string) {

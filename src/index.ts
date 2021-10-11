@@ -1,5 +1,5 @@
 import { convertToBase64 } from "./utils/toBase64";
-import { fetchImage } from "./utils/getImage";
+import { fetchImage } from "./utils/fetchImage";
 import { DesignTextRow } from "./interfaces/desginTextRow";
 import mysql2 from "mysql2/promise";
 import { ImageFactory } from "./factories/imageFactory";
@@ -19,34 +19,42 @@ const config = {
 };
 
 const promiseWrapper = async () => {
+  const ticketDesginId = 2953 + ";";
   const mysql = require("mysql2/promise");
   const con = await mysql.createConnection(config);
-  const ticketDesignQuery = "SELECT * FROM ticketdesigns WHERE id=2953;";
+  const ticketDesignQuery =
+    "SELECT * FROM ticketdesigns WHERE id=" + ticketDesginId;
   const ticketElementsQuery =
-    "SELECT * FROM ticketdesign_elements WHERE ticketdesign=2953;";
+    "SELECT * FROM ticketdesign_elements WHERE ticketdesign=" + ticketDesginId;
   const data = {
     ticketDesign: (await con.query(ticketDesignQuery)) as DesignTextRow,
     ticketElements: (await con.query(ticketElementsQuery)) as ElementTextRow,
   };
-
   return data;
 };
 
 class AbstractFactory {
-  static createNewDesign(oldTicketElement: ElementTextRow) {
+  static createNewDesign(
+    oldTicketElement: ElementTextRow,
+    ticketInfo: DesignTextRow
+  ) {
     switch (oldTicketElement.type) {
       case "text":
         return TextFactory.convert(oldTicketElement);
       case "required":
         return TextFactory.convert(oldTicketElement);
       case "barcode":
-        return ImageFactory.convert(oldTicketElement);
+        return ImageFactory.convert(oldTicketElement, ticketInfo);
       case "barcode2":
-        return ImageFactory.convert(oldTicketElement);
+        return ImageFactory.convert(oldTicketElement, ticketInfo);
       case "qrcode":
-        return ImageFactory.convert(oldTicketElement);
+        return ImageFactory.convert(oldTicketElement, ticketInfo);
       case "picture":
-        return ImageFactory.convert(oldTicketElement);
+        return ImageFactory.convert(oldTicketElement, ticketInfo);
+      case "picture_eventlogo":
+        return ImageFactory.convert(oldTicketElement, ticketInfo);
+      case "picture_eventheader":
+        return ImageFactory.convert(oldTicketElement, ticketInfo);
     }
   }
 }
@@ -59,7 +67,10 @@ const fabricfy = async (oldElements: any) => {
   fabricsElements.ticketInfos = oldElements.ticketDesign[0][0];
   for (let i = 0; i < oldElements.ticketElements[0].length; i++) {
     fabricsElements.objects.push(
-      await AbstractFactory.createNewDesign(oldElements.ticketElements[0][i])
+      await AbstractFactory.createNewDesign(
+        oldElements.ticketElements[0][i],
+        fabricsElements.ticketInfos
+      )
     );
   }
 

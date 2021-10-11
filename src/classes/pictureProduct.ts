@@ -1,7 +1,6 @@
 import { TextRow } from "..";
 import { Image } from "../interfaces/image";
-import { fetchImage } from "../utils/getImage";
-let url = "";
+import { fetchImage } from "../utils/fetchImage";
 
 export class PictureProduct implements Image {
   type!: string;
@@ -48,11 +47,8 @@ export class PictureProduct implements Image {
     this.height = intrinsicHeight;
   }
 
-  public async saveImage(name: string) {
-    await fetchImage(
-      `https://cdn.tiodev.de/companies/V9jxYWiH/ticketdesigns/xOt8qeZi/elements/nmLExwhV.jpg`,
-      name
-    );
+  public async saveImage(name: string, src: string) {
+    await fetchImage(src, name);
   }
 
   public setSrc(src: string) {

@@ -1,4 +1,4 @@
-import { fetchImage } from "./../utils/getImage";
+import { fetchImage } from "../utils/fetchImage";
 import { FabricObject } from "./fabricObject";
 
 export interface Image extends FabricObject {
