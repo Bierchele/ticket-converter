@@ -1,8 +1,9 @@
+import { throws } from "assert";
+import { fetchImage } from "../utils/fetchImage";
 import { TextRow } from "..";
 import { Image } from "../interfaces/image";
-import { fetchImage } from "../utils/fetchImage";
 
-export class Barcode2Product implements Image {
+export class ImageProduct implements Image {
   type!: string;
   version!: string;
   originX!: string;
@@ -37,18 +38,20 @@ export class Barcode2Product implements Image {
   cropX!: number;
   cropY!: number;
   src!: string;
-  crossOrigin!: string | null;
+  crossOrigin!: null | string;
   filters!: [];
+
+  public async saveImage(name: string, src: string) {
+    try {
+      await fetchImage(src, name);
+    } catch (err) {}
+  }
 
   public setDimensions(intrinsicWidth: number, intrinsicHeight: number) {
     this.scaleX = this.width / intrinsicWidth;
     this.scaleY = this.height / intrinsicHeight;
     this.width = intrinsicWidth;
     this.height = intrinsicHeight;
-  }
-
-  public async saveImage(name: string, src: string) {
-    await fetchImage(src, name);
   }
 
   public setSrc(src: string) {
@@ -60,8 +63,8 @@ export class Barcode2Product implements Image {
     this.version = "4.5.1";
     this.originX = "left";
     this.originY = "top";
-    this.left = textRowObj.left; // * 0.8522935779816514;
-    this.top = textRowObj.top; // * 0.84143958868894586;
+    this.left = textRowObj.left;
+    this.top = textRowObj.top;
     this.width = textRowObj.width;
     this.height = textRowObj.height;
     this.fill = "#000000";
@@ -73,8 +76,8 @@ export class Barcode2Product implements Image {
     this.strokeLineJoin = "miter";
     this.strokeUniform = false;
     this.strokeMiterLimit = 4;
-    this.scaleX = 0; /// * .86 / 93;
-    this.scaleY = 0; // * .84 / 351 ;
+    this.scaleX = 0;
+    this.scaleY = 0;
     this.angle = 0;
     this.flipX = false;
     this.flipY = false;
@@ -89,7 +92,7 @@ export class Barcode2Product implements Image {
     this.skewY = 0;
     this.cropX = 0;
     this.cropY != 0;
-    this.src = ""; //
+    this.src = "";
     this.crossOrigin = null;
     this.filters = [];
   }

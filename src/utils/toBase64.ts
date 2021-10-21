@@ -5,5 +5,3 @@ export const convertToBase64 = (localFile: string): any => {
 
   return "data:image/gif;base64," + bitmap.toString("base64");
 };
-
-// getPic sollte request nutzen anstatt het

@@ -2,7 +2,6 @@ import { fetchImage } from "../utils/fetchImage";
 import { FabricObject } from "./fabricObject";
 
 export interface Image extends FabricObject {
-  angle: number;
   flipX: boolean;
   flipY: boolean;
   opacity: number;

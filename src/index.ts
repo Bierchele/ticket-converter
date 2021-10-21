@@ -1,14 +1,12 @@
-import { convertToBase64 } from "./utils/toBase64";
-import { fetchImage } from "./utils/fetchImage";
+import { fabricToShema } from "./convert/fabricToShema";
 import { DesignTextRow } from "./interfaces/desginTextRow";
-import mysql2 from "mysql2/promise";
-import { ImageFactory } from "./factories/imageFactory";
-import { TextFactory } from "./factories/textFactory";
+import { ImageFactory } from "./factories/ImageFactory";
+import { TextFactory } from "./factories/TextFactory";
 import { FabricObject } from "./interfaces/fabricObject";
-import { TextBox } from "./interfaces/textBox";
 import { ElementTextRow } from "./interfaces/elementTextRow";
-import { getSize } from "./utils/getPicSize";
 import clipboardy from "clipboardy";
+import { jsonToSvg } from "./convert/jsonTo.svg";
+import fs from "fs";
 
 const config = {
   host: "127.0.0.1",
@@ -18,10 +16,11 @@ const config = {
   database: "altdaten",
 };
 
-const promiseWrapper = async () => {
-  const ticketDesginId = 2953 + ";";
+const promiseWrapper = async (desginID: number) => {
+  const ticketDesginId = desginID + ";";
   const mysql = require("mysql2/promise");
   const con = await mysql.createConnection(config);
+
   const ticketDesignQuery =
     "SELECT * FROM ticketdesigns WHERE id=" + ticketDesginId;
   const ticketElementsQuery =
@@ -41,6 +40,8 @@ class AbstractFactory {
     switch (oldTicketElement.type) {
       case "text":
         return TextFactory.convert(oldTicketElement);
+      case "text_v":
+        return TextFactory.convert(oldTicketElement);
       case "required":
         return TextFactory.convert(oldTicketElement);
       case "barcode":
@@ -55,6 +56,8 @@ class AbstractFactory {
         return ImageFactory.convert(oldTicketElement, ticketInfo);
       case "picture_eventheader":
         return ImageFactory.convert(oldTicketElement, ticketInfo);
+      case "picture_customerphoto":
+        return ImageFactory.convert(oldTicketElement, ticketInfo);
     }
   }
 }
@@ -66,21 +69,28 @@ const fabricfy = async (oldElements: any) => {
   };
   fabricsElements.ticketInfos = oldElements.ticketDesign[0][0];
   for (let i = 0; i < oldElements.ticketElements[0].length; i++) {
-    fabricsElements.objects.push(
-      await AbstractFactory.createNewDesign(
+    try {
+      const fabricElement = await AbstractFactory.createNewDesign(
         oldElements.ticketElements[0][i],
         fabricsElements.ticketInfos
-      )
-    );
+      );
+      fabricsElements.objects.push(fabricElement);
+    } catch (err) {}
   }
-
-  clipboardy.writeSync(JSON.stringify(fabricsElements));
-  //console.log(JSON.stringify(fabricsElements));
+  //clipboardy.writeSync(JSON.stringify(fabricsElements));
+  return JSON.stringify(fabricsElements);
 };
 
 (async () => {
-  const oldElements = await promiseWrapper();
-  fabricfy(oldElements);
+  for (let i = 1; i < 2969; i++) {}
+  const oldElements = await promiseWrapper(2953);
+  const jsonFormat: JSON = JSON.parse(await fabricfy(oldElements));
+  const svg = jsonToSvg(jsonFormat);
+  console.log(svg);
+  // await fabricToShema(jsonFormat, svg, 2953);
+  if (fs.existsSync(`./src/assets/images/picture.jpeg`)) {
+    fs.unlinkSync(`./src/assets/images/picture.jpeg`);
+  }
 })();
 
 export { ElementTextRow as TextRow };

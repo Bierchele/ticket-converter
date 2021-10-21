@@ -7,18 +7,21 @@ export const setDynamics = async (
   product: any,
   src: string
 ) => {
-  let [empty, imageDimensions] = await Promise.allSettled([
-    await product.saveImage(oldElement.type, src),
-    await getSize(oldElement.type),
-  ]);
-  if (imageDimensions.status === "fulfilled") {
-    product.setDimensions(
-      imageDimensions.value.intrinscWitdh,
-      imageDimensions.value.intrinsicHeight
-    );
-  }
-  product.setSrc(
-    convertToBase64(`./src/assets/images/${oldElement.type}.jpeg`)
-  );
+  try {
+    let [empty, imageDimensions] = await Promise.allSettled([
+      await product.saveImage(oldElement.type, src),
+      await getSize(oldElement.type),
+    ]);
+    if (imageDimensions.status === "fulfilled") {
+      product.setDimensions(
+        imageDimensions.value.intrinscWitdh,
+        imageDimensions.value.intrinsicHeight
+      );
+      product.setSrc(
+        convertToBase64(`./src/assets/images/${oldElement.type}.jpeg`)
+      );
+    }
+  } catch (error) {}
+
   return product;
 };
