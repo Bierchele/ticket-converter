@@ -1,75 +1,82 @@
 import { replaceT } from "./../utils/replaceTspans";
 import { fabric } from "fabric";
 import clipboardy from "clipboardy";
+import { querySVG } from "./fabricToShema";
 
-export const jsonToSvg = (json: any): any => {
-  const myJson = json;
-  let canvas: fabric.StaticCanvas;
-
-  let string = `	<tspan x="-391.5" y="-3.41" style="white-space: pre;" > Beim Kauf des Tickets hast Du den Allgemeinen Geschäftsbedingungen des Veranstalters zugestimmt. Ticketio.de übernimmt keine Haftung für Schäden am Ticket, die der </tspan>
-  <tspan x="-391.5" y="9.7" >Käufer zu verantworten hat. Für weitere Fragen bitte Kontakt aufnehmen mit support@ticketio.de.</tspan></text>
- `;
-
-  string = replaceT(string);
-
-  switch (myJson.ticketInfos.type) {
+export const jsonToSvg = (json: any, id: number) => {
+  //let canvas: fabric.StaticCanvas;
+  switch (json.ticketInfos.type) {
     case "printathome":
-      canvas = new fabric.StaticCanvas(null, { width: 940, height: 1329 });
-      let printAtHomeSvg = "";
-      canvas?.loadFromJSON(myJson, async () => {
-        canvas.renderAll();
-        printAtHomeSvg = canvas?.toSVG();
-        console.log(printAtHomeSvg);
+      const printAtHomeCanvas = new fabric.StaticCanvas(null, {
+        width: 940,
+        height: 1329,
       });
-      return printAtHomeSvg;
-    case "hard":
-      canvas = new fabric.StaticCanvas(null, { width: 938, height: 365 });
-      let hardSvg = "";
-      canvas?.loadFromJSON(myJson, () => {
-        canvas.renderAll();
-        hardSvg = canvas?.toSVG();
+      printAtHomeCanvas?.loadFromJSON(json, async function () {
+        printAtHomeCanvas.renderAll();
+        const svg = printAtHomeCanvas.toSVG();
+        await querySVG(svg, id);
       });
 
-      return hardSvg;
+    case "hard":
+      const hardCanvas = new fabric.StaticCanvas(null, {
+        width: 938,
+        height: 365,
+      });
+      hardCanvas?.loadFromJSON(json, async () => {
+        hardCanvas.renderAll();
+        const svg = hardCanvas?.toSVG();
+        await querySVG(svg, id);
+      });
     case "plastik":
-      canvas = new fabric.StaticCanvas(null, { width: 450, height: 250 });
-      let plastikSvg = "";
-      canvas?.loadFromJSON(myJson, () => {
-        canvas.renderAll();
-        plastikSvg = canvas?.toSVG();
+      const plastikCanvas = new fabric.StaticCanvas(null, {
+        width: 450,
+        height: 250,
       });
-      return plastikSvg;
+      plastikCanvas?.loadFromJSON(json, async () => {
+        plastikCanvas.renderAll();
+        const svg = plastikCanvas?.toSVG();
+        await querySVG(svg, id);
+      });
     case "spio2zoll":
-      canvas = new fabric.StaticCanvas(null, { width: 230, height: 230 });
-      let spioSvg = "";
-      canvas?.loadFromJSON(myJson, () => {
-        canvas.renderAll();
-        spioSvg = canvas?.toSVG();
+      const spio2Canvas = new fabric.StaticCanvas(null, {
+        width: 230,
+        height: 230,
       });
-      return spioSvg;
+      spio2Canvas?.loadFromJSON(json, async () => {
+        spio2Canvas.renderAll();
+        const svg = spio2Canvas?.toSVG();
+        await querySVG(svg, id);
+      });
+
     case "spio4zoll":
-      canvas = new fabric.StaticCanvas(null, { width: 700, height: 400 });
-      let spio4Svg = "";
-      canvas?.loadFromJSON(myJson, () => {
-        canvas.renderAll();
-        spio4Svg = canvas?.toSVG();
+      const spio4Canvas = new fabric.StaticCanvas(null, {
+        width: 700,
+        height: 400,
       });
-      return spio4Svg;
+      spio4Canvas?.loadFromJSON(json, async () => {
+        spio4Canvas.renderAll();
+        const svg = spio4Canvas?.toSVG();
+        await querySVG(svg, id);
+      });
     case "boca6zoll":
-      canvas = new fabric.StaticCanvas(null, { width: 700, height: 400 });
-      let boca6Svg = "";
-      canvas?.loadFromJSON(myJson, () => {
-        canvas.renderAll();
-        boca6Svg = canvas?.toSVG();
+      const boca6Canvas = new fabric.StaticCanvas(null, {
+        width: 700,
+        height: 400,
       });
-      return boca6Svg;
+      boca6Canvas?.loadFromJSON(json, async () => {
+        boca6Canvas.renderAll();
+        const svg = boca6Canvas?.toSVG();
+        await querySVG(svg, id);
+      });
     case "boca8zoll":
-      canvas = new fabric.StaticCanvas(null, { width: 900, height: 350 });
-      let boca8svg = "";
-      canvas?.loadFromJSON(myJson, () => {
-        canvas.renderAll();
-        boca8svg = canvas?.toSVG();
+      const boca8Canvas = new fabric.StaticCanvas(null, {
+        width: 900,
+        height: 350,
       });
-      return boca8svg;
+      boca8Canvas?.loadFromJSON(json, async () => {
+        boca8Canvas.renderAll();
+        const svg = boca8Canvas?.toSVG();
+        await querySVG(svg, id);
+      });
   }
 };

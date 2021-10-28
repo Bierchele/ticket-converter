@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 274 365" xmlns="http://www.w3.org/2000/svg">
+<g fill-rule="evenodd">
+<rect width="274" height="365" fill="#F0EFEF"/>
+<ellipse cx="136" cy="365" rx="116" ry="180" fill="#FFF"/>
+<circle cx="136.5" cy="124.5" r="70.5" fill="#FFF"/>
+</g>
+</svg>

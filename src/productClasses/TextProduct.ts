@@ -44,8 +44,15 @@ export class TextProduct implements TextBox {
     this.angle = angle;
   }
 
-  makeJasonable() {
-    this.text = this.text.replace(/\n/g, "\\n");
+  makeJasonable(str: string) {
+    /*
+    this.text = this.text.replace(/\n/g, "\\n ");
+    this.text = this.text.replace(/"/g, "''");
+    this.text = this.text.replace(/'/g, "''");
+    this.text = this.text.replace(/„/g, "'„'");
+    this.text = this.text.replace(/“/g, "'“'");
+    */
+    this.text = escape(str);
   }
 
   constructor(textRowObj: TextRow) {

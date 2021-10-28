@@ -1,3 +1,4 @@
+import clipboardy from "clipboardy";
 import Path from "path";
 var fs = require("fs");
 
@@ -9,11 +10,7 @@ const config = {
   database: "altdaten",
 };
 
-export const fabricToShema = async (
-  jsonFormat: JSON,
-  svg: string | undefined,
-  id: number
-) => {
+const fabricToShema = async (query: string) => {
   const mysql = require("mysql2/promise");
   const con = await mysql.createConnection(config);
   con.connect((err: any) => {
@@ -23,15 +20,23 @@ export const fabricToShema = async (
       console.log("pups");
     }
   });
-
-  const query =
-    "UPDATE ticketdesigns SET json='" +
-    JSON.stringify([jsonFormat]) +
-    "' svg='" +
-    svg +
-    "' WHERE id=" +
-    id +
-    ";";
-  //const query ="UPDATE ticketdesigns SET json='" + JSON.stringify([{ hallo: "name" }, {pop}]) + "' WHERE id=1;";
-  con.query(query);
+  await con.query(query);
+  con.end();
 };
+
+const querySVG = async (svgString: string, id: number) => {
+  const query =
+    "UPDATE ticketdesigns SET svg='" + svgString + "' WHERE id=" + id + ";";
+
+  await fabricToShema(query);
+};
+
+const queryJSON = async (jsonFormat: JSON, id: number) => {
+  clipboardy.writeSync(JSON.stringify(jsonFormat));
+  const query = `UPDATE ticketdesigns 
+                 SET json=\'${JSON.stringify([jsonFormat])}\'
+                 WHERE id=${id};`;
+  await fabricToShema(query);
+};
+
+export { fabricToShema, queryJSON, querySVG };

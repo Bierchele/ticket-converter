@@ -6,12 +6,16 @@ export class TextFactory {
     switch (oldElement.type) {
       case "text_v":
         const vertikal = new TextProduct(oldElement);
-        vertikal.makeJasonable();
+        vertikal.makeJasonable(oldElement.value);
         vertikal.setAngle(90);
         return vertikal;
+      case "required":
+        const required = new TextProduct(oldElement);
+        required.makeJasonable(oldElement.value);
+        return required;
       default:
         const defaultText = new TextProduct(oldElement);
-        defaultText.makeJasonable();
+        defaultText.makeJasonable(oldElement.value);
         return defaultText;
     }
   }
